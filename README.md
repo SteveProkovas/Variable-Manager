@@ -126,6 +126,109 @@ int main()
     add_variable_if_not_in_list(&list,"d","int");
     show_list(list);
 
+
+
+
+Certainly! Let's expand on the README template to provide more detailed explanations:
+
+---
+
+# Variable Manager
+
+Variable Manager is a simple C program designed to manage variables and their data types within a program. It provides functionality to add, display, search for, and delete variables in a linked list data structure.
+
+## Features
+
+- **Add Variable:** Add variables with their names and data types to the list. The program ensures that each variable is unique within the list.
+- **Display List:** Display the current list of variables and their data types. This allows users to view all variables stored in the list at any point.
+- **Search Variable:** Search for a variable by name within the list. This feature helps users determine whether a variable is already declared before adding it.
+- **Delete List:** Delete all variables from the list. This feature is useful for clearing the list and freeing up memory when needed.
+
+## Usage
+
+1. **Compilation:**
+   - Compile the `ypoergasia_4_template.c` file using a C compiler (e.g., gcc).
+   ```
+   gcc -o variable_manager ypoergasia_4_template.c
+   ```
+
+2. **Execution:**
+   - Run the compiled executable.
+   ```
+   ./variable_manager
+   ```
+
+3. **Adding Variables:**
+   - Use the `add_variable` function to add variables with their names and data types to the list.
+   ```c
+   add_variable(&list,"variable_name","data_type");
+   ```
+   - For example, `add_variable(&list,"a","int")` adds a variable named "a" with the data type "int" to the list.
+
+4. **Displaying List:**
+   - Use the `show_list` function to display the current list of variables and their data types.
+   ```c
+   show_list(list);
+   ```
+   - This function iterates through the list and prints each variable's name and data type.
+
+5. **Searching for Variables:**
+   - Use the `variable_in_list` function to search for a variable by name within the list.
+   ```c
+   variable_in_list(list, "variable_name");
+   ```
+   - This function returns `TRUE` if the variable is found in the list and `FALSE` otherwise.
+
+6. **Deleting List:**
+   - Use the `delete_list` function to delete all variables from the list and free memory.
+   ```c
+   delete_list(&list);
+   ```
+   - This function deallocates memory for each node in the list and sets the list's head pointer to NULL.
+
+## Example
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    // Creating a list
+    node_pointer list;
+    list = NULL;
+
+    // Adding variables to the list
+    add_variable(&list,"a","int");
+    add_variable(&list,"b","int");
+    add_variable(&list,"c","float");
+
+    // Displaying the list
+    show_list(list);
+
+    // Searching for a variable
+    int found = variable_in_list(list, "a");
+    if (found)
+        printf("Variable found in the list\n");
+    else
+        printf("Variable not found in the list\n");
+
+    // Deleting the list
+    delete_list(&list);
+
+    return 0;
+}
+```
+
+This example demonstrates how to use the functions provided by the Variable Manager to manage variables within a program. It adds variables "a", "b", and "c" to the list, displays the list, searches for variable "a", and then deletes the list.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+This expanded README provides a detailed overview of the Variable Manager project, including its features, usage instructions, an example usage in code, and licensing information. You can further customize it based on your project's specific needs.
+
     return 0;
 }
 ```
