@@ -1,6 +1,5 @@
-# UniversityProject_in_C
+# Variable Manager
 
-Certainly! Let's walk through the code provided in `ypoergasia_4_template.c`:
 
 ```c
 #include <stdio.h>
