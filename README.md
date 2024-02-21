@@ -1,19 +1,7 @@
 # Variable Manager
 
 
-```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-```
-These lines include necessary header files for standard input/output operations (`stdio.h`), dynamic memory allocation (`stdlib.h`), and string manipulation (`string.h`).
 
-```c
-// Definition of boolean constants TRUE and FALSE
-#define TRUE 1
-#define FALSE 0
-```
-These lines define boolean constants `TRUE` and `FALSE` for convenience.
 
 ```c
 // Definition of the node structure for the linked list
