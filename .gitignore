@@ -1,52 +1,32 @@
-# Prerequisites
-*.d
-
-# Object files
+# Compiled Object files
 *.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
 
 # Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+variable_manager
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# Dependency directories
+bin/
+lib/
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# IDE or Editor files
+.vscode/
+.idea/
+
+# Build files
+build/
+*.log
+
+# Ignore any files or directories created during development/testing
+tmp/
+temp/
+*.tmp
+*.swp
+
+# Ignore generated documentation
+doc/
+
+# Ignore user-specific configuration files
+config.ini
+
+# Ignore any file named 'credentials' or containing sensitive information
+credentials
