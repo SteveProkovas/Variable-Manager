@@ -10,10 +10,10 @@ The program utilizes a linked list data structure to store variables and their c
 
 ### Compilation
 
-Compile the `ypoergasia_4_template.c` file using a C compiler:
+Compile the `main.c` file using a C compiler:
 
 ```
-gcc -o variable_manager ypoergasia_4_template.c
+gcc -o variable_manager main.c
 ```
 
 ### Execution
@@ -70,11 +70,10 @@ int main() {
 
 ## Future Extensions
 
-- **Variable Type Checking:** Implement functionality to check for compatibility between variable types in expressions or assignments.
-- **Variable Scope Management:** Extend the program to support variable scopes and manage variables within different scopes.
-- **Graphical User Interface (GUI):** Develop a GUI interface for easier interaction and visualization of variables.
-- **File Input/Output:** Add support for reading variables from and writing variables to files for persistence.
-- **Error Handling:** Enhance error handling to provide informative messages for users when operations fail.
+- **Variable Type Checking:** Implement functionality to perform type checking for variables, ensuring compatibility between operations.
+- **User Input Handling:** Allow users to input variables and data types interactively, providing a more user-friendly interface.
+- **File I/O Support:** Enable reading variables and data types from files and writing them back, facilitating data persistence.
+- **Dynamic Memory Management:** Implement dynamic memory management techniques to optimize memory usage and performance.
 
 ## License
 
@@ -82,4 +81,4 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ---
 
-This updated README includes a "Future Extensions" section suggesting potential improvements and enhancements for the Variable Manager project. These extensions can be implemented in the future to further enhance the functionality and usability of the program.
+This README provides a comprehensive overview of the Variable Manager project, including its description, usage instructions, an example code snippet, future extension possibilities, and licensing information. You can further customize it based on your project's specific needs and details.
