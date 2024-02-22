@@ -78,7 +78,3 @@ int main() {
 ## License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-
----
-
-This README provides a comprehensive overview of the Variable Manager project, including its description, usage instructions, an example code snippet, future extension possibilities, and licensing information. You can further customize it based on your project's specific needs and details.
