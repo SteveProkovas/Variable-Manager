@@ -1,7 +1,3 @@
-Certainly! Here's an updated version of the README with a "Future Extensions" section:
-
----
-
 # Variable Manager
 
 Variable Manager is a simple C program designed to manage variables and their data types within a program. It provides functionality to add, display, search for, and delete variables in a linked list data structure.
