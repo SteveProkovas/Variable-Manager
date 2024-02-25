@@ -1,18 +1,14 @@
 #include <stdio.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-// Definition of TRUE and FALSE constants
-#define TRUE 1
-#define FALSE 0
+#include <stdbool.h>
 
 // Definition of the node structure
 typedef struct node
 {
     char name[25];
     char data_type[6];
-    struct node *next;
+    struct node* next;
 } node;
 
 // Definition of the pointer to a node
@@ -21,6 +17,12 @@ typedef node* node_pointer;
 // Display the contents of a list on the screen
 void show_list(node_pointer list)
 {
+    if (list == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
     printf("\nList:\n====================\n");
 
     // Print each node in the list
@@ -34,20 +36,20 @@ void show_list(node_pointer list)
 }
 
 // Search if a variable exists in the list
-int variable_in_list(node_pointer list, char* name)
+bool variable_in_list(node_pointer list, const char* name)
 {
     // Traverse the list to find the variable
     while (list != NULL)
     {
         if (strcmp(list->name, name) == 0)
-            return TRUE; // Variable found
+            return true; // Variable found
         list = list->next;
     }
-    return FALSE; // Variable not found
+    return false; // Variable not found
 }
 
 // Add a new variable to the beginning of the list
-void add_variable(node_pointer* list, char* name, char* data_type)
+void add_variable(node_pointer* list, const char* name, const char* data_type)
 {
     // Allocate memory for the new node
     node_pointer new_node = (node_pointer)malloc(sizeof(node));
@@ -69,7 +71,7 @@ void add_variable(node_pointer* list, char* name, char* data_type)
 }
 
 // Add a variable to the list if it does not already exist
-void add_variable_if_not_in_list(node_pointer* list, char* name, char* data_type)
+void add_variable_if_not_in_list(node_pointer* list, const char* name, const char* data_type)
 {
     if (!variable_in_list(*list, name))
     {
@@ -85,6 +87,12 @@ void add_variable_if_not_in_list(node_pointer* list, char* name, char* data_type
 // Delete the list and free the memory
 void delete_list(node_pointer* list)
 {
+    if (*list == NULL)
+    {
+        printf("List is already empty\n");
+        return;
+    }
+
     node_pointer current = *list;
     node_pointer next;
 
@@ -108,8 +116,7 @@ int main()
     system("chcp 1253>nul");
 
     // Create a list
-    node_pointer list;
-    list = NULL;
+    node_pointer list = NULL;
 
     // Add variables to the list
     add_variable(&list, "a", "int");
