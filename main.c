@@ -6,7 +6,7 @@
 // Definition of the node structure
 typedef struct node
 {
-    char name[25];
+    char* name; // Changed to use dynamic memory allocation for variable names
     char data_type[6];
     struct node* next;
 } node;
@@ -59,8 +59,17 @@ void add_variable(node_pointer* list, const char* name, const char* data_type)
         return;
     }
 
-    // Fill in the data for the new node
+    // Allocate memory for the name and copy it
+    new_node->name = (char*)malloc(strlen(name) + 1);
+    if (new_node->name == NULL)
+    {
+        printf("Memory allocation failed\n");
+        free(new_node);
+        return;
+    }
     strcpy(new_node->name, name);
+
+    // Fill in the data for the new node
     strcpy(new_node->data_type, data_type);
     new_node->next = *list;
 
@@ -100,7 +109,8 @@ void delete_list(node_pointer* list)
     while (current != NULL)
     {
         next = current->next;
-        free(current);
+        free(current->name); // Free memory for variable name
+        free(current); // Free memory for node
         current = next;
     }
 
