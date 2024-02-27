@@ -14,6 +14,9 @@ typedef struct node
 // Definition of the pointer to a node
 typedef node* node_pointer;
 
+// Global variable for type checking (1 for int, 2 for float)
+int type_flag;
+
 // Display the contents of a list on the screen
 void show_list(node_pointer list)
 {
@@ -80,17 +83,46 @@ void add_variable(node_pointer* list, const char* name, const char* data_type)
 }
 
 // Add a variable to the list if it does not already exist
-void add_variable_if_not_in_list(node_pointer* list, const char* name, const char* data_type)
+bool add_variable_if_not_in_list(node_pointer* list, const char* name, const char* data_type)
 {
-    if (!variable_in_list(*list, name))
+    // Check for null pointers
+    if (!list || !name || !data_type)
     {
-        // Variable does not exist, add it to the list
-        add_variable(list, name, data_type);
+        printf("Error: Invalid arguments passed to add_variable_if_not_in_list.\n");
+        return false;
     }
-    else
+
+    // Check if variable already exists
+    if (variable_in_list(*list, name))
     {
-        printf("Variable %s already declared\n", name);
+        printf("Variable %s already declared.\n", name);
+        return false;
     }
+
+    // Allocate memory for new node and name
+    node_pointer new_node = (node_pointer)malloc(sizeof(node));
+    if (!new_node)
+    {
+        printf("Memory allocation failed for new variable.\n");
+        return false;
+    }
+    new_node->name = (char*)malloc(strlen(name) + 1);
+    if (!new_node->name)
+    {
+        free(new_node); // Free node memory in case name allocation fails
+        printf("Memory allocation failed for variable name.\n");
+        return false;
+    }
+
+    // Fill in data and add node to list (remaining code from original function)
+    strcpy(new_node->name, name);
+    strcpy(new_node->data_type, data_type);
+    new_node->next = *list;
+    *list = new_node;
+
+    printf("Variable %s added successfully\n", name);
+
+    return true; // Indicate successful addition
 }
 
 // Delete the list and free the memory
@@ -120,6 +152,39 @@ void delete_list(node_pointer* list)
     printf("List erased successfully\n");
 }
 
+// Variable Type Checking: Check if a variable type matches the operation type
+bool variable_type_check(const char* variable_type)
+{
+    if (type_flag == 1 && strcmp(variable_type, "int") == 0)
+        return true; // Type check passed for integer
+    else if (type_flag == 2 && strcmp(variable_type, "float") == 0)
+        return true; // Type check passed for float
+    else
+        return false; // Type check failed
+}
+
+// Perform operation between two variables
+void perform_operation(node_pointer list, const char* var1, const char* var2, const char* operation)
+{
+    // Type checking
+    type_flag = 1;
+    if (!variable_in_list(list, var1) || !variable_type_check(var1))
+    {
+        printf("Error: %s is not a valid integer variable\n", var1);
+        return;
+    }
+
+    type_flag = 2;
+    if (!variable_in_list(list, var2) || !variable_type_check(var2))
+    {
+        printf("Error: %s is not a valid floating-point variable\n", var2);
+        return;
+    }
+
+    // Perform operation
+    printf("Performing %s operation between %s and %s\n", operation, var1, var2);
+}
+
 int main()
 {
     // Command to display Greek characters correctly
@@ -129,27 +194,23 @@ int main()
     node_pointer list = NULL;
 
     // Add variables to the list
-    add_variable(&list, "a", "int");
-    add_variable(&list, "b", "int");
-    add_variable(&list, "c", "float");
-    add_variable(&list, "d", "int");
-    add_variable(&list, "e", "int");
-    add_variable(&list, "f", "float");
-    add_variable(&list, "g", "int");
-    add_variable(&list, "h", "float");
-    add_variable(&list, "i", "float");
+    add_variable_if_not_in_list(&list, "a", "int");
+    add_variable_if_not_in_list(&list, "b", "int");
+    add_variable_if_not_in_list(&list, "c", "float");
+    add_variable_if_not_in_list(&list, "d", "int");
+    add_variable_if_not_in_list(&list, "e", "int");
+    add_variable_if_not_in_list(&list, "f", "float");
+    add_variable_if_not_in_list(&list, "g", "int");
+    add_variable_if_not_in_list(&list, "h", "float");
+    add_variable_if_not_in_list(&list, "i", "float");
     show_list(list);
+
+    // Variable Type Checking and Operation
+    perform_operation(list, "a", "b", "add"); // Example operation
 
     // Delete the list
     delete_list(&list);
-    show_list(list);
-
-    // Add variables to the list
-    add_variable_if_not_in_list(&list, "a", "int");
-    add_variable_if_not_in_list(&list, "b", "int");
-    add_variable_if_not_in_list(&list, "a", "float");  // Variable that already exists in the list
-    add_variable_if_not_in_list(&list, "d", "int");
-    show_list(list);
+    show_list(list); // List should be empty now
 
     return 0;
 }
