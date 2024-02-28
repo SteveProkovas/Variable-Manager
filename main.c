@@ -52,23 +52,23 @@ bool variable_in_list(node_pointer list, const char* name)
 }
 
 // Add a new variable to the beginning of the list
-void add_variable(node_pointer* list, const char* name, const char* data_type)
+bool add_variable(node_pointer* list, const char* name, const char* data_type)
 {
     // Allocate memory for the new node
     node_pointer new_node = (node_pointer)malloc(sizeof(node));
     if (new_node == NULL)
     {
-        printf("Memory allocation failed\n");
-        return;
+        printf("Memory allocation failed for new variable.\n");
+        return false;
     }
 
     // Allocate memory for the name and copy it
     new_node->name = (char*)malloc(strlen(name) + 1);
     if (new_node->name == NULL)
     {
-        printf("Memory allocation failed\n");
+        printf("Memory allocation failed for variable name.\n");
         free(new_node);
-        return;
+        return false;
     }
     strcpy(new_node->name, name);
 
@@ -80,13 +80,14 @@ void add_variable(node_pointer* list, const char* name, const char* data_type)
     *list = new_node;
 
     printf("Variable %s added successfully\n", name);
+    return true;
 }
 
 // Add a variable to the list if it does not already exist
 bool add_variable_if_not_in_list(node_pointer* list, const char* name, const char* data_type)
 {
-    // Check for null pointers
-    if (!list || !name || !data_type)
+    // Check for null pointers and empty strings
+    if (!list || !name || !data_type || strlen(name) == 0 || strlen(data_type) == 0)
     {
         printf("Error: Invalid arguments passed to add_variable_if_not_in_list.\n");
         return false;
@@ -95,7 +96,7 @@ bool add_variable_if_not_in_list(node_pointer* list, const char* name, const cha
     // Check if variable already exists
     if (variable_in_list(*list, name))
     {
-        printf("Variable %s already declared.\n", name);
+        printf("Error: Variable %s already declared.\n", name);
         return false;
     }
 
@@ -109,18 +110,18 @@ bool add_variable_if_not_in_list(node_pointer* list, const char* name, const cha
     new_node->name = (char*)malloc(strlen(name) + 1);
     if (!new_node->name)
     {
-        free(new_node); // Free node memory in case name allocation fails
         printf("Memory allocation failed for variable name.\n");
+        free(new_node);
         return false;
     }
 
-    // Fill in data and add node to list (remaining code from original function)
-    strcpy(new_node->name, name);
-    strcpy(new_node->data_type, data_type);
-    new_node->next = *list;
-    *list = new_node;
-
-    printf("Variable %s added successfully\n", name);
+    // Fill in data and add node to list
+    if (!add_variable(list, name, data_type))
+    {
+        free(new_node->name);
+        free(new_node);
+        return false;
+    }
 
     return true; // Indicate successful addition
 }
@@ -194,15 +195,20 @@ int main()
     node_pointer list = NULL;
 
     // Add variables to the list
-    add_variable_if_not_in_list(&list, "a", "int");
-    add_variable_if_not_in_list(&list, "b", "int");
-    add_variable_if_not_in_list(&list, "c", "float");
-    add_variable_if_not_in_list(&list, "d", "int");
-    add_variable_if_not_in_list(&list, "e", "int");
-    add_variable_if_not_in_list(&list, "f", "float");
-    add_variable_if_not_in_list(&list, "g", "int");
-    add_variable_if_not_in_list(&list, "h", "float");
-    add_variable_if_not_in_list(&list, "i", "float");
+    if (!add_variable_if_not_in_list(&list, "a", "int") ||
+        !add_variable_if_not_in_list(&list, "b", "int") ||
+        !add_variable_if_not_in_list(&list, "c", "float") ||
+        !add_variable_if_not_in_list(&list, "d", "int") ||
+        !add_variable_if_not_in_list(&list, "e", "int") ||
+        !add_variable_if_not_in_list(&list, "f", "float") ||
+        !add_variable_if_not_in_list(&list, "g", "int") ||
+        !add_variable_if_not_in_list(&list, "h", "float") ||
+        !add_variable_if_not_in_list(&list, "i", "float"))
+    {
+        delete_list(&list); // Clean up in case of failure
+        return 1;
+    }
+
     show_list(list);
 
     // Variable Type Checking and Operation
