@@ -36,20 +36,6 @@ Run the compiled executable:
 ./variable_manager
 ```
 
-## Functions
-
-- **Add Variable:** `add_variable(&list, "variable_name", "data_type")`
-  Adds a new variable with the specified name and data type to the list.
-
-- **Display List:** `show_list(list)`
-  Displays the current list of variables and their data types.
-
-- **Search Variable:** `variable_in_list(list, "variable_name")`
-  Searches for a variable by name within the list.
-
-- **Delete List:** `delete_list(&list)`
-  Deletes all variables from the list.
-
 ## Example
 
 ```c
