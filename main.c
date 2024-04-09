@@ -13,8 +13,15 @@ typedef struct node {
 // Definition of the pointer to a node
 typedef node* node_pointer;
 
-// Global variables for type checking (1 for int, 2 for float)
-int type_flag;
+// Enumeration for data types
+typedef enum {
+    INT,
+    FLOAT,
+    CHAR
+} data_type_t;
+
+// Global variables for type checking
+data_type_t type_flag;
 
 // Display the contents of a list on the screen
 void show_list(node_pointer list) {
@@ -128,10 +135,12 @@ void delete_list(node_pointer* list) {
 
 // Variable Type Checking: Check if a variable type matches the operation type
 bool variable_type_check(const char* variable_type) {
-    if (type_flag == 1 && strcmp(variable_type, "int") == 0)
+    if (type_flag == INT && strcmp(variable_type, "int") == 0)
         return true; // Type check passed for integer
-    else if (type_flag == 2 && strcmp(variable_type, "float") == 0)
+    else if (type_flag == FLOAT && strcmp(variable_type, "float") == 0)
         return true; // Type check passed for float
+    else if (type_flag == CHAR && strcmp(variable_type, "char") == 0)
+        return true; // Type check passed for char
     else
         return false; // Type check failed
 }
@@ -139,13 +148,13 @@ bool variable_type_check(const char* variable_type) {
 // Perform operation between two variables
 void perform_operation(node_pointer list, const char* var1, const char* var2, const char* operation) {
     // Type checking
-    type_flag = 1;
+    type_flag = INT;
     if (!variable_in_list(list, var1) || !variable_type_check(var1)) {
         printf("Error: Variable '%s' is not a valid integer.\n", var1);
         return;
     }
 
-    type_flag = 2;
+    type_flag = FLOAT;
     if (!variable_in_list(list, var2) || !variable_type_check(var2)) {
         printf("Error: Variable '%s' is not a valid floating-point.\n", var2);
         return;
