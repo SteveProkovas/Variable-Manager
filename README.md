@@ -1,84 +1,78 @@
 # Variable Manager
 
-Variable Manager is a C program designed to manage variables and their data types within a program. It provides functionality to add, display, search for, and delete variables in a linked list data structure.
-
-## Description
-
-The program utilizes a linked list data structure to store variables and their corresponding data types. Each variable is represented as a node in the linked list, containing fields for the variable name and its data type. The provided functions allow users to interact with the list by adding, displaying, searching for, and deleting variables.
+Variable Manager is a simple C program that manages variables and their data types using a linked list data structure. It allows users to add variables, perform type checking, display the list of variables, and perform operations between variables.
 
 ## Features
 
-1. **Dynamic Memory Allocation**: Variable names are stored using dynamic memory allocation, allowing for variable names of any length.
-
-2. **Error Handling**: Proper error handling is implemented for memory allocation to prevent memory leaks. Error messages are displayed if memory allocation fails.
-
-3. **Type Checking**: Global variables are used to perform type checking for operations between variables. Type checking functions are simplified and robust.
-
-4. **Improved List Management**: List deletion functions include checks to ensure that the list is not already empty before attempting to delete it. Memory for variable names and nodes is properly deallocated during list deletion.
-
-5. **Enhanced Output Messages**: Output messages are refined to provide clearer information about the status of operations and error conditions.
+- **Dynamic Memory Allocation**: Variable names and data types are stored using dynamic memory allocation, allowing for flexible lengths.
+- **Error Handling**: Proper error handling is implemented for memory allocation to prevent memory leaks. Error messages are displayed if memory allocation fails.
+- **Type Checking**: Global variables are used to perform type checking for operations between variables. Type checking functions are simplified and robust.
+- **Enhanced List Management**: List deletion functions include checks to ensure that the list is not already empty before attempting to delete it. Memory for variable names and data types is properly deallocated during list deletion.
+- **Enhanced Output Messages**: Output messages are refined to provide clearer information about the status of operations and error conditions.
 
 ## Usage
 
-### Compilation
+1. **Compilation**: Compile the `variable_manager.c` file using a C compiler. For example, using `gcc`:
 
-Compile the `main.c` file using a C compiler:
+   ```bash
+   gcc variable_manager.c -o variable_manager
+   ```
 
-```bash
-gcc -o variable_manager main.c
-```
+2. **Execution**: Run the compiled executable:
 
-### Execution
+   ```bash
+   ./variable_manager
+   ```
 
-Run the compiled executable:
-
-```bash
-./variable_manager
-```
-
-## Example
+3. **Example Usage**: The program demonstrates adding variables, performing operations, and displaying the list of variables. You can modify the `main` function to suit your specific use case.
 
 ```c
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Definition of the node structure
+typedef struct node {
+    char* name; // Dynamic memory allocation for variable names
+    char* data_type; // Dynamic memory allocation for data types
+    struct node* next;
+} node;
+
+// Definition of the pointer to a node
+typedef node* node_pointer;
+
+// Global variables for type checking (1 for int, 2 for float)
+int type_flag;
+
+// Function prototypes
+// (Add function prototypes here)
 
 int main() {
-    // Creating a list
-    node_pointer list;
-    list = NULL;
+    // Create a list
+    node_pointer list = NULL;
 
-    // Adding variables to the list
-    add_variable(&list,"a","int");
-    add_variable(&list,"b","int");
-    add_variable(&list,"c","float");
+    // Example usage: Add some variables
+    add_variable_if_not_in_list(&list, "a", "int");
+    add_variable_if_not_in_list(&list, "b", "float");
+    add_variable_if_not_in_list(&list, "c", "char");
 
-    // Displaying the list
+    // Display the list
     show_list(list);
 
-    // Searching for a variable
-    int found = variable_in_list(list, "a");
-    if (found)
-        printf("Variable found in the list\n");
-    else
-        printf("Variable not found in the list\n");
+    // Example usage: Perform an operation
+    perform_operation(list, "a", "b", "add");
 
-    // Deleting the list
+    // Clean up and exit
     delete_list(&list);
-
     return 0;
 }
 ```
 
-## Future Extensions
+## Contributing
 
-- **Variable Type Checking:** Implement advanced functionality for type checking, ensuring compatibility between operations.
-
-- **User Input Handling:** Allow users to interactively input variables and data types, providing a user-friendly interface.
-
-- **File I/O Support:** Enable reading variables and data types from files and writing them back, facilitating data persistence.
-
-- **Dynamic Memory Management:** Implement dynamic memory management techniques to optimize memory usage and performance.
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or create a pull request on GitHub.
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the `LICENSE` file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
