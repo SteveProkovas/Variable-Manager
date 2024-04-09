@@ -5,15 +5,15 @@
 
 // Definition of the node structure
 typedef struct node {
-    char* name; // Changed to use dynamic memory allocation for variable names
-    char data_type[6];
+    char* name; // Dynamic memory allocation for variable names
+    char* data_type; // Dynamic memory allocation for data types
     struct node* next;
 } node;
 
 // Definition of the pointer to a node
 typedef node* node_pointer;
 
-// Global variable for type checking (1 for int, 2 for float)
+// Global variables for type checking (1 for int, 2 for float)
 int type_flag;
 
 // Display the contents of a list on the screen
@@ -50,27 +50,36 @@ bool add_variable(node_pointer* list, const char* name, const char* data_type) {
     // Allocate memory for the new node
     node_pointer new_node = (node_pointer)malloc(sizeof(node));
     if (new_node == NULL) {
-        printf("Memory allocation failed for new variable.\n");
+        printf("Error: Memory allocation failed for new variable.\n");
         return false;
     }
 
     // Allocate memory for the name and copy it
     new_node->name = (char*)malloc(strlen(name) + 1);
     if (new_node->name == NULL) {
-        printf("Memory allocation failed for variable name.\n");
+        printf("Error: Memory allocation failed for variable name.\n");
         free(new_node);
         return false;
     }
     strcpy(new_node->name, name);
 
-    // Fill in the data for the new node
+    // Allocate memory for the data type and copy it
+    new_node->data_type = (char*)malloc(strlen(data_type) + 1);
+    if (new_node->data_type == NULL) {
+        printf("Error: Memory allocation failed for data type.\n");
+        free(new_node->name);
+        free(new_node);
+        return false;
+    }
     strcpy(new_node->data_type, data_type);
+
+    // Set next pointer of the new node
     new_node->next = *list;
 
     // Update the list to point to the new node
     *list = new_node;
 
-    printf("Variable %s added successfully\n", name);
+    printf("Variable '%s' of type '%s' added successfully.\n", name, data_type);
     return true;
 }
 
@@ -84,31 +93,12 @@ bool add_variable_if_not_in_list(node_pointer* list, const char* name, const cha
 
     // Check if variable already exists
     if (variable_in_list(*list, name)) {
-        printf("Error: Variable %s already declared.\n", name);
+        printf("Error: Variable '%s' already declared.\n", name);
         return false;
     }
 
-    // Allocate memory for new node and name
-    node_pointer new_node = (node_pointer)malloc(sizeof(node));
-    if (!new_node) {
-        printf("Memory allocation failed for new variable.\n");
-        return false;
-    }
-    new_node->name = (char*)malloc(strlen(name) + 1);
-    if (!new_node->name) {
-        printf("Memory allocation failed for variable name.\n");
-        free(new_node);
-        return false;
-    }
-
-    // Fill in data and add node to list
-    if (!add_variable(list, name, data_type)) {
-        free(new_node->name);
-        free(new_node);
-        return false;
-    }
-
-    return true; // Indicate successful addition
+    // Add the variable to the list
+    return add_variable(list, name, data_type);
 }
 
 // Delete the list and free the memory
@@ -125,6 +115,7 @@ void delete_list(node_pointer* list) {
     while (current != NULL) {
         next = current->next;
         free(current->name); // Free memory for variable name
+        free(current->data_type); // Free memory for data type
         free(current); // Free memory for node
         current = next;
     }
@@ -132,7 +123,7 @@ void delete_list(node_pointer* list) {
     // Reset the list pointer
     *list = NULL;
 
-    printf("List erased successfully\n");
+    printf("List erased successfully.\n");
 }
 
 // Variable Type Checking: Check if a variable type matches the operation type
@@ -150,49 +141,36 @@ void perform_operation(node_pointer list, const char* var1, const char* var2, co
     // Type checking
     type_flag = 1;
     if (!variable_in_list(list, var1) || !variable_type_check(var1)) {
-        printf("Error: %s is not a valid integer variable\n", var1);
+        printf("Error: Variable '%s' is not a valid integer.\n", var1);
         return;
     }
 
     type_flag = 2;
     if (!variable_in_list(list, var2) || !variable_type_check(var2)) {
-        printf("Error: %s is not a valid floating-point variable\n", var2);
+        printf("Error: Variable '%s' is not a valid floating-point.\n", var2);
         return;
     }
 
     // Perform operation
-    printf("Performing %s operation between %s and %s\n", operation, var1, var2);
+    printf("Performing %s operation between '%s' and '%s'.\n", operation, var1, var2);
 }
 
 int main() {
-    // Command to display Greek characters correctly
-    system("chcp 1253>nul");
-
     // Create a list
     node_pointer list = NULL;
 
-    // Add variables to the list
-    if (!add_variable_if_not_in_list(&list, "a", "int") ||
-        !add_variable_if_not_in_list(&list, "b", "int") ||
-        !add_variable_if_not_in_list(&list, "c", "float") ||
-        !add_variable_if_not_in_list(&list, "d", "int") ||
-        !add_variable_if_not_in_list(&list, "e", "int") ||
-        !add_variable_if_not_in_list(&list, "f", "float") ||
-        !add_variable_if_not_in_list(&list, "g", "int") ||
-        !add_variable_if_not_in_list(&list, "h", "float") ||
-        !add_variable_if_not_in_list(&list, "i", "float")) {
-        delete_list(&list); // Clean up in case of failure
-        return 1;
-    }
+    // Example usage: Add some variables
+    add_variable_if_not_in_list(&list, "a", "int");
+    add_variable_if_not_in_list(&list, "b", "float");
+    add_variable_if_not_in_list(&list, "c", "char");
 
+    // Display the list
     show_list(list);
 
-    // Variable Type Checking and Operation
-    perform_operation(list, "a", "b", "add"); // Example operation
+    // Example usage: Perform an operation
+    perform_operation(list, "a", "b", "add");
 
-    // Delete the list
+    // Clean up and exit
     delete_list(&list);
-    show_list(list); // List should be empty now
-
     return 0;
 }
